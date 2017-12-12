@@ -13,3 +13,12 @@ func Type(val string) Attribute {
 func Display(val bool) Attribute {
 	return Attr("display", val)
 }
+
+// Charset returns a 'charset' attribute to be applied to a tag.
+func Charset(val string) Attribute {
+	return Attr("charset", val)
+}
+
+func Lang(val string) Attribute {
+	return Attr("lang", en)
+}
