@@ -38,7 +38,7 @@ If you've ever written an application in Go that needed to serve up templated HT
 then you know the process for doing so isn't particularly straightforward or robust. You define an HTML file with designated insertion
 points that your Go app will ultimately fill with some data. A traditional example of the above looks something like this:
 ```go
-htmlString := `
+var htmlString = `
 <!DOCTYPE html>
 
 <html lang="{{.Lang}}">
@@ -60,13 +60,28 @@ type Page struct {
 	Time    string
 }
 
-func TemplateHTML() {
-	page := Page{
-		Lang: "en",
+func TemplateHTML() (string, error) {
+	pageData := Page{
+		Lang:    "en",
 		Charset: "utf-8",
-		Time: time.Now().Format("15:04:05 Monday, January 2, 2006"),
+		Time:    time.Now().Format("15:04:05 Monday, January 2, 2006"),
 	}
 
+	tmpl, err := template.New("my_page").Parse(htmlString)
+	if err != nil {
+		return "", err
+	}
 
+	buf := bytes.NewBuffer([]byte{})
+	if err := tmpl.Execute(buf, pageData); err != nil {
+		return "", err
+	}
+
+	page, err := ioutil.ReadAll(buf)
+	return string(page), err
 }
 ```
+Not only there there more lines, it's definitely not as intuitive what's going on. You need
+to be pretty familiar with the `html/template` package and how it works. There's also a strict
+separation of layout (`htlmString`) and data (`pageData`) that adds friction to building
+dynamic pages.

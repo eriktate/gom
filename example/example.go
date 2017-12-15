@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bytes"
+	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
-	"html/template"
 
 	. "github.com/eriktate/gom"
 )
@@ -40,7 +42,7 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(GimmeDatHTML(dateFormat)))
 }
 
-htmlString := `
+var htmlString = `
 <!DOCTYPE html>
 
 <html lang="{{.Lang}}">
@@ -62,11 +64,23 @@ type Page struct {
 	Time    string
 }
 
-func TemplateHTML() {
-	page := Page{
-		Lang: "en",
+func TemplateHTML() (string, error) {
+	pageData := Page{
+		Lang:    "en",
 		Charset: "utf-8",
-		Time: time.Now().Format("15:04:05 Monday, January 2, 2006"),
+		Time:    time.Now().Format("15:04:05 Monday, January 2, 2006"),
 	}
 
+	tmpl, err := template.New("my_page").Parse(htmlString)
+	if err != nil {
+		return "", err
+	}
+
+	buf := bytes.NewBuffer([]byte{})
+	if err := tmpl.Execute(buf, pageData); err != nil {
+		return "", err
+	}
+
+	page, err := ioutil.ReadAll(buf)
+	return string(page), err
 }

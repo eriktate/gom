@@ -30,6 +30,21 @@ func Div(attrs Attributes, children ...string) string {
 	return wrapTag("div", attrs, children...)
 }
 
+// Article returns an <article></article>
+func Article(attrs Attributes, children ...string) string {
+	return wrapTag("article", attrs, children...)
+}
+
+// Aside returns an <aside></aside>
+func Aside(attrs Attributes, children ...string) string {
+	return wrapTag("aside", attrs, children...)
+}
+
+// Main returns a <main></main>
+func Main(attrs Attributes, children ...string) string {
+	return wrapTag("main", attrs, children...)
+}
+
 // Span returns a <span></span>
 func Span(attrs Attributes, children ...string) string {
 	return wrapTag("span", attrs, children...)
