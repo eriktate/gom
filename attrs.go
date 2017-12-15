@@ -1,5 +1,7 @@
 package gom
 
+import "strings"
+
 // This file contains Attribute definitions as defined in the HTMl
 // spec.
 
@@ -19,6 +21,12 @@ func Charset(val string) Attribute {
 	return Attr("charset", val)
 }
 
+// Lang returns a 'lang' attribute to be applied to a tag.
 func Lang(val string) Attribute {
-	return Attr("lang", en)
+	return Attr("lang", val)
+}
+
+// Class returns a 'class' attribute to be applied to a tag.
+func Class(vals ...string) Attribute {
+	return Attr("class", strings.Join(vals, " "))
 }

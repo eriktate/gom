@@ -1,9 +1,13 @@
 package gom
 
+import (
+	"fmt"
+	"strings"
+)
+
 // Html returns a <html></html>
-func Html5(attrs Attributes, children ...string) string {
-	// TODO: This feels dirty, maybe clean it up?
-	return "<!DOCTYPE html>" + wrapTag("html", attrs, children...)
+func Html(attrs Attributes, children ...string) string {
+	return wrapTag("html", attrs, children...)
 }
 
 // Head returns a <head></head>
@@ -101,4 +105,8 @@ func Input(attrs Attributes) string {
 // Br returns a <br />
 func Br(attrs Attributes) string {
 	return wrapSelfClosingTag("br", attrs)
+}
+
+func Doctype(children ...string) string {
+	return fmt.Sprintf("<!DOCTYPE html>%s", strings.Join(children, ""))
 }

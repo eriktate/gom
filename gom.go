@@ -92,10 +92,10 @@ func wrapTag(tag string, attrs Attributes, children ...string) string {
 
 func wrapSelfClosingTag(tag string, attrs Attributes) string {
 	if attrs == nil || len(attrs) == 0 {
-		return fmt.Sprintf("<%s />", tag)
+		return fmt.Sprintf("<%s>", tag)
 	}
 
-	return fmt.Sprintf("<%s %s />", tag, attrs.String())
+	return fmt.Sprintf("<%s %s>", tag, attrs.String())
 }
 
 func toString(val interface{}) string {
